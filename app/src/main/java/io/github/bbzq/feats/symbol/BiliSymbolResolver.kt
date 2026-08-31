@@ -62,6 +62,7 @@ object BiliSymbolResolver {
     private const val HP_REWARD_AD_MINI_GAME = "RewardAdHook.MiniGameRewardedVideoAd"
     private const val HP_TRY_FREE_QUALITY = "TryFreeQualityHook.GeneratedMessages"
     private const val HP_TEENAGERS_MODE = "TeenagersModeHook.DialogActivity"
+    private const val HP_TRAFFIC_FREE = "CustomCdnHook.TrafficFreeState"
     private const val HP_DOWNLOAD_THREAD_LISTENER = "DownloadThreadHook.Listener"
     private const val HP_DOWNLOAD_THREAD_REPORT = "DownloadThreadHook.ReportMethod"
     private const val HP_STORY_PLAYER_AD = "StoryPlayerAdHook.InstallPoints"
@@ -255,6 +256,9 @@ object BiliSymbolResolver {
         val teenagersMode = scanHookPoint(HP_TEENAGERS_MODE, hookPoints, scanErrors, log) {
             scanTeenagersMode(classLoader)
         }
+        val trafficFree = scanOptionalHookPoint(HP_TRAFFIC_FREE, hookPoints, scanErrors, log) {
+            scanTrafficFree(classLoader, ::bridge)
+        }
         val account = scanHookPoint(HP_ACCOUNT_ACCESS_KEY, hookPoints, scanErrors, log) {
             scanAccount(classLoader, ::bridge)
         }
@@ -384,6 +388,7 @@ object BiliSymbolResolver {
             customTheme = customTheme,
             customSkin = customSkin,
             videoQuality = videoQuality,
+            trafficFree = trafficFree,
         )
     }
 
@@ -791,6 +796,43 @@ object BiliSymbolResolver {
         )
         return SymbolScanResult.Found(symbols, "GeneratedMessages/PlayView", symbols.evidence)
     }
+
+    /**
+     * Locates the traffic-free (tf) state accessor used by the playurl pipeline.
+     *
+     * The server only hands out PCDN/mcdn endpoints when the client reports tf == 0, so
+     * forcing the value to 1 keeps mirror URLs in the response. The accessor moves between
+     * the media helper and the tf SDK depending on the version, hence the class sweep.
+     */
+    private fun scanTrafficFree(
+        classLoader: ClassLoader,
+        bridge: () -> DexKitBridge?,
+    ): SymbolScanResult<TrafficFreeSymbols> {
+        val classNames = buildSet {
+            addAll(TRAFFIC_FREE_CLASS_CANDIDATES)
+            TRAFFIC_FREE_SIMPLE_NAMES.forEach { addAll(findClassNamesBySimpleName(bridge, it)) }
+        }
+        val methods = classNames.asSequence()
+            .mapNotNull { classLoader.loadClassOrNull(it) }
+            .distinctBy { it.name }
+            .flatMap { type -> type.allMethods().asSequence().filter { it.isTrafficFreeStateMethod() } }
+            .distinctBy(Method::toGenericString)
+            .toList()
+        if (methods.isEmpty()) return SymbolScanResult.Missing("traffic-free state method not found")
+        val symbols = TrafficFreeSymbols(
+            stateMethods = methods.map(MethodDescriptor::of),
+            evidence = "classes=${classNames.size},methods=${methods.size}",
+        )
+        return SymbolScanResult.Found(symbols, methods.first().declaringClass.name, symbols.evidence)
+    }
+
+    /** `tf()` reports the carrier free-data state as an int; anything with arguments is unrelated. */
+    private fun Method.isTrafficFreeStateMethod(): Boolean =
+        name in TRAFFIC_FREE_METHOD_NAMES &&
+            parameterCount == 0 &&
+            returnType == Int::class.javaPrimitiveType &&
+            !Modifier.isAbstract(modifiers) &&
+            !declaringClass.isInterface
 
     private fun scanTeenagersMode(classLoader: ClassLoader): SymbolScanResult<TeenagersModeSymbols> {
         val methods = TEENAGERS_MODE_ACTIVITIES.mapNotNull { className ->
@@ -4305,6 +4347,13 @@ object BiliSymbolResolver {
         "com.bapis.bilibili.p4218app.playerunite.p4240v1.PlayerMoss",
         "com.bapis.bilibili.p4218app.playerunite.p4240v1.KPlayerMoss",
     )
+    private val TRAFFIC_FREE_CLASS_CANDIDATES = arrayOf(
+        "com.bilibili.lib.media.util.RuntimeHelper",
+        "com.bilibili.lib.tf.TfManager",
+        "com.bilibili.tf.TfManager",
+    )
+    private val TRAFFIC_FREE_SIMPLE_NAMES = arrayOf("RuntimeHelper", "TfManager")
+    private val TRAFFIC_FREE_METHOD_NAMES = setOf("tf", "getTf")
     private const val PROGRESS_BAR_CLASS = "android.widget.ProgressBar"
     private const val PANEL_WIDGET_KT_CLASS = "com.bilibili.inline.panel.PanelWidgetKt"
     private const val STORY_SEEK_BAR_CLASS = "com.bilibili.video.story.view.StorySeekBar"

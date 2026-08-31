@@ -364,6 +364,8 @@
     <string name="custom_cdn_host_custom">输入自定义 Host</string>
     <string name="custom_cdn_host_input_message">可输入域名（可选端口）；无需包含路径或查询参数。</string>
     <string name="custom_cdn_host_invalid">请输入有效的 CDN Host。</string>
+    <string name="block_pcdn_title">阻止 PCDN 回源</string>
+    <string name="block_pcdn_summary">剔除播放地址中的 PCDN/mcdn 节点，并伪装免流标记让服务端只下发官方 CDN；切换后请重新打开视频。</string>
     <string name="custom_theme_title">自制主题</string>
     <string name="custom_theme_summary">在 Bilibili 主题列表中加入自定义主色主题；修改后重新进入主题页即可生效。</string>
     <string name="custom_theme_color_title">自制主题颜色</string>

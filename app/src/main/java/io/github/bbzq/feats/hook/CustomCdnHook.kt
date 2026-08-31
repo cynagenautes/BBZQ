@@ -19,6 +19,10 @@ import java.lang.reflect.Proxy
  * This deliberately uses the PlayView symbols already resolved for the quality hook instead
  * of a fixed app class name: Bilibili moves the client implementation frequently, while the
  * generated protobuf getters/setters remain stable.
+ *
+ * PCDN blocking works on both ends of the same request: the traffic-free spoof stops the server
+ * from picking PCDN endpoints in the first place, and the response rewrite drops whatever PCDN
+ * URLs still come back. Either half alone is enough to keep playback off PCDN.
  */
 class CustomCdnHook(env: io.github.bbzq.feats.RoamingEnv) : BaseRoamingHook(env) {
     override fun startHook() {
@@ -39,6 +43,34 @@ class CustomCdnHook(env: io.github.bbzq.feats.RoamingEnv) : BaseRoamingHook(env)
         } else {
             log("CustomCdn: hooked $installed response method(s)")
         }
+        installTrafficFreeSpoof()
+    }
+
+    /**
+     * The server only hands out PCDN/mcdn endpoints when the client reports tf == 0, so raising
+     * the reported traffic-free state keeps mirror URLs in the response instead of leaving the
+     * rewrite step with nothing but PCDN candidates to work with.
+     */
+    private fun installTrafficFreeSpoof() {
+        val methods = env.symbols?.trafficFree?.restore(classLoader)?.stateMethods.orEmpty()
+        if (methods.isEmpty()) {
+            log("CustomCdn: traffic-free state method unavailable, PCDN blocking stays response-side only")
+            return
+        }
+        var installed = 0
+        methods.forEach { method ->
+            runCatching {
+                env.hookAfter(method) { param ->
+                    if (ModuleSettings.isBlockPcdnEnabled(prefs) && param.result == 0) {
+                        param.result = 1
+                    }
+                }
+                installed++
+            }.onFailure {
+                log("CustomCdn: failed to hook ${method.declaringClass.name}.${method.name}", it)
+            }
+        }
+        log("CustomCdn: traffic-free spoof hooked $installed method(s)")
     }
 
     private fun wrapHandler(handler: Any): Any? {
@@ -61,56 +93,67 @@ class CustomCdnHook(env: io.github.bbzq.feats.RoamingEnv) : BaseRoamingHook(env)
     }
 
     private fun rewriteResponse(response: Any?) {
-        val host = ModuleSettings.getCustomCdnHost(prefs)
-        if (!ModuleSettings.isCustomCdnEnabled(prefs) || host == null || response == null) return
+        if (response == null) return
+        val options = currentOptions() ?: return
         runCatching {
             sequenceOf(
                 response.callMethod("getVideoInfo"),
                 response.callMethod("getVodInfo"),
                 response.callMethod("getViewInfo"),
                 response,
-            ).filterNotNull().distinct().forEach { rewriteVideoInfo(it, host) }
+            ).filterNotNull().distinct().forEach { rewriteVideoInfo(it, options) }
         }.onFailure { log("CustomCdn: response rewrite failed", it) }
     }
 
-    private fun rewriteVideoInfo(videoInfo: Any, host: String) {
+    /**
+     * PCDN 阻止不依赖自定义节点：没有选节点时也能把 base 换成备用地址里的非 PCDN 项。
+     */
+    private fun currentOptions(): RewriteOptions? {
+        val host = ModuleSettings.getCustomCdnHost(prefs)
+            ?.takeIf { ModuleSettings.isCustomCdnEnabled(prefs) }
+        val blockPCdn = ModuleSettings.isBlockPcdnEnabled(prefs)
+        if (host == null && !blockPCdn) return null
+        return RewriteOptions(host = host, blockPCdn = blockPCdn)
+    }
+
+    private fun rewriteVideoInfo(videoInfo: Any, options: RewriteOptions) {
         val streams = videoInfo.callMethod("getStreamListList")
             ?: videoInfo.callMethod("getStreamList")
         (streams as? Iterable<*>)?.forEach { stream ->
             stream ?: return@forEach
             listOf("getDashVideo", "getMultiDashVideo", "getSegmentVideo")
-                .forEach { getter -> stream.callMethod(getter)?.let { rewriteVideoContent(it, host) } }
+                .forEach { getter -> stream.callMethod(getter)?.let { rewriteVideoContent(it, options) } }
             stream.callMethod("getContent")?.callMethod("getValue")
-                ?.let { rewriteVideoContent(it, host) }
+                ?.let { rewriteVideoContent(it, options) }
             // 部分版本把音频挂在每个 stream 下，而不是 VodInfo 下。
-            rewriteAudioLists(stream, host)
+            rewriteAudioLists(stream, options)
         }
-        rewriteAudioLists(videoInfo, host)
+        rewriteAudioLists(videoInfo, options)
     }
 
-    private fun rewriteVideoContent(content: Any, host: String) {
+    private fun rewriteVideoContent(content: Any, options: RewriteOptions) {
         if (content.callMethod("getBaseUrl") is String || content.callMethod("getUrl") is String) {
-            rewriteUrlItem(content, host)
+            rewriteUrlItem(content, options)
         }
         val dashVideos = content.callMethod("getDashVideosList") ?: content.callMethod("getDashVideos")
         (dashVideos as? Iterable<*>)
-            ?.forEach { it?.let { item -> rewriteUrlItem(item, host) } }
+            ?.forEach { it?.let { item -> rewriteUrlItem(item, options) } }
         val segments = content.callMethod("getSegmentList") ?: content.callMethod("getSegment")
         (segments as? Iterable<*>)
-            ?.forEach { it?.let { item -> rewriteUrlItem(item, host) } }
+            ?.forEach { it?.let { item -> rewriteUrlItem(item, options) } }
     }
 
-    private fun rewriteAudioLists(owner: Any, host: String) {
+    private fun rewriteAudioLists(owner: Any, options: RewriteOptions) {
         listOf("getDashAudioList", "getDashAudioListList", "getAudioDashVideoList", "getDashAudio")
             .forEach { getter ->
                 when (val result = owner.callMethod(getter)) {
-                    is Iterable<*> -> result.forEach { it?.let { item -> rewriteUrlItem(item, host) } }
-                    else -> result?.let { rewriteUrlItem(it, host) }
+                    is Iterable<*> -> result.forEach { it?.let { item -> rewriteUrlItem(item, options) } }
+                    else -> result?.let { rewriteUrlItem(it, options) }
                 }
             }
     }
 
-    private fun rewriteUrlItem(item: Any, selectedHost: String) {
+    private fun rewriteUrlItem(item: Any, options: RewriteOptions) {
         val baseGetter = when {
             item.callMethod("getBaseUrl") is String -> "getBaseUrl"
             item.callMethod("getUrl") is String -> "getUrl"
@@ -130,13 +173,19 @@ class CustomCdnHook(env: io.github.bbzq.feats.RoamingEnv) : BaseRoamingHook(env)
             ?: findUrlListFieldValue(item)
         val backups = (rawBackups as? Iterable<*>)
             ?.filterIsInstance<String>().orEmpty()
-        val source = listOf(base).plus(backups).firstOrNull { !it.isPCdn() } ?: return
-        val rewrittenBase = source.replaceHost(selectedHost)
+        val source = listOf(base).plus(backups).firstOrNull { !it.isPCdn() }
+            // A PCDN URL still carries the UPos path and signature, so re-hosting it is the only
+            // way out when the server hands back nothing but PCDN endpoints.
+            ?: base.takeIf { options.blockPCdn && options.host != null }
+            ?: return
+        val rewrittenBase = options.rewrite(source)
         val rewrittenBackups = buildList {
-            addAll(backups.filter { !it.isPCdn() }.take(2).map { it.replaceHost(selectedHost) })
-            // Keep the untouched source as a final fallback if the selected endpoint is down.
-            add(source)
+            addAll(backups.filter { !it.isPCdn() }.take(2).map(options::rewrite))
+            // Keep the untouched source as a final fallback if the selected endpoint is down,
+            // unless it is the PCDN URL the user asked us to get rid of.
+            if (!source.isPCdn()) add(source)
         }.filter { it != rewrittenBase }.distinct()
+        if (rewrittenBase == base && rewrittenBackups == backups) return
 
         if (baseSetter == null || !invokeOneArg(item, baseSetter, rewrittenBase)) {
             replaceStoredValue(item, base, rewrittenBase)
@@ -185,6 +234,14 @@ class CustomCdnHook(env: io.github.bbzq.feats.RoamingEnv) : BaseRoamingHook(env)
         }?.let { field ->
             runCatching { field.set(target, replacement); true }.getOrDefault(false)
         } ?: false
+    }
+
+    /**
+     * @param host selected UPos endpoint, or null when only PCDN blocking is enabled.
+     * @param blockPCdn drop PCDN endpoints even when that means re-hosting a PCDN URL.
+     */
+    private inner class RewriteOptions(val host: String?, val blockPCdn: Boolean) {
+        fun rewrite(url: String): String = host?.let { url.replaceHost(it) } ?: url
     }
 
     private fun String.isPCdn(): Boolean {

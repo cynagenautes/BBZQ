@@ -560,6 +560,12 @@ class SettingsContentFactory(
             false,
         ),
         createCustomCdnHostRow(),
+        createSwitchRow(
+            context.getString(R.string.block_pcdn_title),
+            context.getString(R.string.block_pcdn_summary),
+            ModuleSettings.KEY_BLOCK_PCDN_ENABLED,
+            false,
+        ),
     )
 
     private fun commentRows(): List<View> {

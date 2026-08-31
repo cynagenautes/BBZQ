@@ -47,6 +47,7 @@ data class BiliHookSymbols(
     val customTheme: CustomThemeSymbols? = null,
     val customSkin: CustomSkinSymbols? = null,
     val videoQuality: VideoQualitySymbols? = null,
+    val trafficFree: TrafficFreeSymbols? = null,
 ) {
     fun isUsableWith(expectedFingerprint: String): Boolean =
         cacheSchemaVersion == CACHE_SCHEMA_VERSION &&
@@ -90,9 +91,10 @@ data class BiliHookSymbols(
         .putOpt("customTheme", customTheme?.toJson())
         .putOpt("customSkin", customSkin?.toJson())
         .putOpt("videoQuality", videoQuality?.toJson())
+        .putOpt("trafficFree", trafficFree?.toJson())
 
     companion object {
-        const val CACHE_SCHEMA_VERSION = 36
+        const val CACHE_SCHEMA_VERSION = 37
 
         fun fromJson(raw: String?): BiliHookSymbols? {
             if (raw.isNullOrBlank()) return null
@@ -140,6 +142,7 @@ data class BiliHookSymbols(
                     customTheme = obj.optJSONObject("customTheme")?.let(CustomThemeSymbols::fromJson),
                     customSkin = obj.optJSONObject("customSkin")?.let(CustomSkinSymbols::fromJson),
                     videoQuality = obj.optJSONObject("videoQuality")?.let(VideoQualitySymbols::fromJson),
+                    trafficFree = obj.optJSONObject("trafficFree")?.let(TrafficFreeSymbols::fromJson),
                 )
             }.getOrNull()
         }
@@ -147,7 +150,7 @@ data class BiliHookSymbols(
 }
 
 object DexKitRuleVersions {
-    const val CURRENT = 56
+    const val CURRENT = 57
 }
 
 data class HookPointStatus(
@@ -548,6 +551,36 @@ data class TeenagersModeSymbols(
 
 data class RestoredTeenagersModeSymbols(
     val onCreateMethods: List<Method>,
+)
+
+/**
+ * 免流（tf）状态读取点。服务端只在 tf == 0 时才会下发 PCDN/mcdn 节点，
+ * 把返回值抬到 1 即可让 playurl 只包含官方 CDN。
+ */
+data class TrafficFreeSymbols(
+    val stateMethods: List<MethodDescriptor>,
+    val evidence: String,
+) {
+    fun toJson(): JSONObject = JSONObject()
+        .put("stateMethods", stateMethods.toJsonArray { it.toJson() })
+        .put("evidence", evidence)
+
+    /** 每个进程可见的类集合不同，能还原到一个即可安装。 */
+    fun restore(classLoader: ClassLoader): RestoredTrafficFreeSymbols? =
+        stateMethods.restoreAvailable(classLoader)
+            .takeIf { it.isNotEmpty() }
+            ?.let(::RestoredTrafficFreeSymbols)
+
+    companion object {
+        fun fromJson(obj: JSONObject): TrafficFreeSymbols = TrafficFreeSymbols(
+            stateMethods = obj.optJSONArray("stateMethods").toList { MethodDescriptor.fromJson(it) },
+            evidence = obj.optString("evidence", "-"),
+        )
+    }
+}
+
+data class RestoredTrafficFreeSymbols(
+    val stateMethods: List<Method>,
 )
 
 data class AccountSymbols(
