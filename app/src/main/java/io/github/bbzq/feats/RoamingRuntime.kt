@@ -24,6 +24,7 @@ import io.github.bbzq.feats.hook.TryFreeQualityHook
 import io.github.bbzq.feats.hook.VideoQualityHook
 import io.github.bbzq.feats.hook.FakeWifiHook
 import io.github.bbzq.feats.hook.FreeCopyHook
+import io.github.bbzq.feats.hook.ClipboardReadBlockHook
 import io.github.bbzq.feats.hook.HomeRecommendAdHook
 import io.github.bbzq.feats.hook.HomeRecommendPreloadHook
 import io.github.bbzq.feats.hook.HomeRecommendTabHook
@@ -178,6 +179,7 @@ object RoamingRuntime {
             )
 
             ProcessScope.MAIN -> listOf(
+                ::ClipboardReadBlockHook,
                 ::DaggerCircularDependencyFixHook,
                 ::SettingHook,
                 ::SplashAdHook,

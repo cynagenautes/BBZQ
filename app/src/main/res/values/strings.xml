@@ -159,6 +159,8 @@
 
     <!-- 启动 -->
     <string name="startup_skip_splash_title">跳过开屏广告</string>
+    <string name="startup_block_clipboard_read_title">禁止自动读取剪贴板</string>
+    <string name="startup_block_clipboard_read_summary">阻止启动、返回前台及剪贴板变化时的自动内容识别与跳转，保留手动复制和粘贴。</string>
     <string name="startup_skip_splash_summary">拦截开屏广告请求，缩短启动等待时间。</string>
     <string name="startup_splash_auto_night_title">开屏页跟随深色模式</string>
     <string name="startup_splash_auto_night_summary">深色模式下把开屏页底色改为黑色，避免从深色界面进入时闪白。</string>

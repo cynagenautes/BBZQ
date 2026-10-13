@@ -1,0 +1,10 @@
+plugins { id 'java' }
+repositories { google(); mavenCentral() }
+dependencies {
+    runtimeOnly 'io.github.skylot:jadx-cli:1.5.3'
+    runtimeOnly 'com.android.tools.smali:smali-baksmali:3.0.9'
+}
+tasks.register('installDecompilers', Copy) {
+    from configurations.runtimeClasspath
+    into layout.projectDirectory.dir('lib')
+}

@@ -2,6 +2,7 @@ package io.github.bbzq.feats.symbol
 
 import android.app.Activity
 import android.content.Context
+import android.content.ClipboardManager
 import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
@@ -28,6 +29,7 @@ import org.luckypray.dexkit.query.FindMethod
 import org.luckypray.dexkit.query.enums.StringMatchType
 import org.luckypray.dexkit.query.matchers.ClassMatcher
 import org.luckypray.dexkit.query.matchers.MethodMatcher
+import org.luckypray.dexkit.query.matchers.MethodsMatcher
 import org.json.JSONObject
 import java.io.File
 import java.lang.reflect.Field
@@ -48,6 +50,7 @@ object BiliSymbolResolver {
     private const val HP_MINE_VIP = "MineProfileHook.VipEntrance"
     private const val HP_SPLASH_AD = "SplashAdHook.JsonParsers"
     private const val HP_SHARE = "ShareHook.InstallPoints"
+    private const val HP_CLIPBOARD_READ = "ClipboardReadBlockHook.AutomaticRead"
     private const val HP_SHARE_LEGACY = "ShareHook.LegacyShareClickResult"
     private const val HP_SHARE_CHANNELS = "ShareHook.ShareChannels"
     private const val HP_SHARE_BASE_INFO = "ShareHook.ShareBaseInfo"
@@ -289,6 +292,9 @@ object BiliSymbolResolver {
         val share = scanHookPoint(HP_SHARE, hookPoints, scanErrors, log) {
             scanShare(classLoader, ::bridge)
         }
+        val clipboardRead = scanHookPoint(HP_CLIPBOARD_READ, hookPoints, scanErrors, log) {
+            scanClipboardRead(classLoader, ::bridge, allowDexKit)
+        }
         val rewardAd = scanHookPoint(HP_REWARD_AD, hookPoints, scanErrors, log) {
             scanRewardAd(classLoader)
         }
@@ -398,6 +404,7 @@ object BiliSymbolResolver {
             scanErrors = scanErrors.distinct(),
             splashAd = splashAd,
             share = share,
+            clipboardRead = clipboardRead,
             rewardAd = rewardAd,
             tryFreeQuality = tryFreeQuality,
             teenagersMode = teenagersMode,
@@ -516,6 +523,57 @@ object BiliSymbolResolver {
             evidence = "gson=${gsonParsers.size},fastjson=${fastJsonParsers.size},kotlinx=${kotlinxParsers.size}",
         )
         return SymbolScanResult.Found(symbols, "JsonParsers", symbols.evidence)
+    }
+
+    private fun scanClipboardRead(
+        classLoader: ClassLoader,
+        bridge: () -> DexKitBridge?,
+        allowDexKit: Boolean,
+    ): SymbolScanResult<ClipboardReadSymbols> {
+        val knownClass = classLoader.loadClassOrNull("tv.danmaku.bili.ui.clipboard.ClipboardChecker")
+        val fastMethod = knownClass?.let(ClipboardReadMethodMatcher::findUnique)
+        fun found(method: Method, via: String): SymbolScanResult<ClipboardReadSymbols> {
+            val symbols = ClipboardReadSymbols(
+                readMethod = MethodDescriptor.of(method),
+                evidence = "via=$via,static String(ClipboardManager),unique=true,owner=${method.declaringClass.name}",
+            )
+            return SymbolScanResult.Found(symbols, "${method.declaringClass.name}.${method.name}", symbols.evidence)
+        }
+        // Install before host onCreate even when the main-thread scan cannot use DexKit.
+        // This unique shape and owner were verified against the 9.0.0 APK in Jadx and Smali.
+        if (!allowDexKit) {
+            return fastMethod?.let { found(it, "known-owner reflection") }
+                ?: SymbolScanResult.Missing("unique ClipboardChecker read helper not found; full scan pending")
+        }
+        val currentBridge = bridge() ?: return fastMethod?.let { found(it, "known-owner reflection; DexKit unavailable") }
+            ?: SymbolScanResult.Missing("clipboard read helper not found; DexKit unavailable")
+        val owners = buildSet {
+            knownClass?.let { add(it.name) }
+            currentBridge.findClass(
+                FindClass.create().matcher(ClassMatcher.create().usingStrings("clipboard.read_enable", "ClipboardChecker")),
+            ).forEach { add(it.name) }
+        }
+        val candidates = owners.flatMap { owner ->
+            currentBridge.findMethod(
+                FindMethod.create().matcher(
+                    MethodMatcher.create()
+                        .declaredClass(owner)
+                        .returnType(String::class.java)
+                        .paramTypes(ClipboardManager::class.java)
+                        .invokeMethods(
+                            MethodsMatcher.create().add(
+                                MethodMatcher.create().declaredClass(ClipboardManager::class.java).name("getPrimaryClip").paramCount(0),
+                            ),
+                        ),
+                ),
+            ).mapNotNull { data -> runCatching { data.getMethodInstance(classLoader) }.getOrNull() }
+        }.filter { ClipboardReadMethodMatcher.findUnique(it.declaringClass) == it }
+            .distinctBy(Method::toGenericString)
+        return when (candidates.size) {
+            1 -> found(candidates.single(), "DexKit owner markers + getPrimaryClip invoke")
+            0 -> SymbolScanResult.Missing("unique automatic clipboard read helper not found: owners=${owners.size}")
+            else -> SymbolScanResult.Missing("automatic clipboard read helper ambiguous: candidates=${candidates.size}")
+        }
     }
 
     private fun scanShare(

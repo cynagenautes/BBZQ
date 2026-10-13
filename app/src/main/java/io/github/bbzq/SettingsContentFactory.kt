@@ -255,6 +255,12 @@ class SettingsContentFactory(
 
     private fun startupRows(): List<View> {
         val rows = mutableListOf<View>()
+        rows += createSwitchRow(
+            context.getString(R.string.startup_block_clipboard_read_title),
+            context.getString(R.string.startup_block_clipboard_read_summary),
+            ModuleSettings.KEY_BLOCK_AUTOMATIC_CLIPBOARD_READ_ENABLED,
+            false,
+        )
         if (hasHiddenFeatures()) {
             rows += createSwitchRow(
                 context.getString(R.string.startup_skip_splash_title),

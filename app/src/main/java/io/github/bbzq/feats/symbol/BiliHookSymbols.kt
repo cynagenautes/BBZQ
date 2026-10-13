@@ -18,6 +18,7 @@ data class BiliHookSymbols(
     val scanErrors: List<String>,
     val splashAd: SplashAdSymbols? = null,
     val share: ShareSymbols? = null,
+    val clipboardRead: ClipboardReadSymbols? = null,
     val rewardAd: RewardAdSymbols? = null,
     val tryFreeQuality: TryFreeQualitySymbols? = null,
     val teenagersMode: TeenagersModeSymbols? = null,
@@ -61,6 +62,7 @@ data class BiliHookSymbols(
         .put("scanErrors", scanErrors.toJsonArray())
         .putOpt("splashAd", splashAd?.toJson())
         .putOpt("share", share?.toJson())
+        .putOpt("clipboardRead", clipboardRead?.toJson())
         .putOpt("rewardAd", rewardAd?.toJson())
         .putOpt("tryFreeQuality", tryFreeQuality?.toJson())
         .putOpt("teenagersMode", teenagersMode?.toJson())
@@ -92,7 +94,7 @@ data class BiliHookSymbols(
         .putOpt("videoQuality", videoQuality?.toJson())
 
     companion object {
-        const val CACHE_SCHEMA_VERSION = 39
+        const val CACHE_SCHEMA_VERSION = 40
 
         fun fromJson(raw: String?): BiliHookSymbols? {
             if (raw.isNullOrBlank()) return null
@@ -106,6 +108,7 @@ data class BiliHookSymbols(
                     scanErrors = obj.optJSONArray("scanErrors").toStringList(),
                     splashAd = obj.optJSONObject("splashAd")?.let(SplashAdSymbols::fromJson),
                     share = obj.optJSONObject("share")?.let(ShareSymbols::fromJson),
+                    clipboardRead = obj.optJSONObject("clipboardRead")?.let(ClipboardReadSymbols::fromJson),
                     rewardAd = obj.optJSONObject("rewardAd")?.let(RewardAdSymbols::fromJson),
                     tryFreeQuality = obj.optJSONObject("tryFreeQuality")?.let(TryFreeQualitySymbols::fromJson),
                     teenagersMode = obj.optJSONObject("teenagersMode")?.let(TeenagersModeSymbols::fromJson),
@@ -147,7 +150,7 @@ data class BiliHookSymbols(
 }
 
 object DexKitRuleVersions {
-    const val CURRENT = 61
+    const val CURRENT = 62
 }
 
 data class HookPointStatus(
