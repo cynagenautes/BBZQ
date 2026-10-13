@@ -24,18 +24,19 @@ BBZQ はチェック本体を終了させず、読み取りヘルパーで空文
 
 `f.call()` の結果を受ける `g.then(Task)` は `TextUtils.isEmpty` で空を判定し、ジャンプ状態を false に戻し、`ClipboardChecker.d`（チェック中）を false にし、TaskCompletionSource を cancel する。続いて StateFlow に `Clipboard content is empty.` の結果を通知する。この早期経路では、後続の内容判定・自動ジャンプ・`setPrimaryClip` による書き換えを行わない。変更通知から呼ばれる `l.run()` も空文字なら後続処理へ進まない。
 
-全 `ClipboardManager.getPrimaryClip()` を一括で止めるフックは入れない。`AppCompatEditText.onTextContextMenuItem`、ライブ入力欄、Compose、Web/ゲーム等の別経路も APK に存在するため、手動貼り付けとこの自動判定を区別する。他の SDK や機能のクリップボード読み取り全般を無効化する機能ではない。
+自動判定のスイッチでは、変更通知リスナーの登録とコールバックも止める。全 `ClipboardManager.getPrimaryClip()` を一括で止めず、手動貼り付けとコピー結果の照合を残す。Web/ゲーム/ページ内エディタの読み取りには別スイッチを追加した。[各操作のケース解析](clipboard-cases.md)に全読み取り箇所と適用範囲を記載した。
 
 ## BBZQ との統合
 
 - 設定 → 启动净化 → **禁止自动读取剪贴板**。既定 OFF。設定のエクスポート／インポートにも含める。
-- メインプロセスのみ、読み取りヘルパーを一度登録し、呼び出し時に設定を読む。OFF の場合は元の処理を通す。
+- メイン、Web、ダウンロード、および対象 Bilibili アプリの子プロセスに適用する。その他の子プロセスではプライバシー機能だけを初期化し、共有キャッシュまたは検証済みクラス名・シグネチャを使用する。OFF の場合は元の処理を通す。
+- 変更通知では、APK 内で確認したリスナーの型だけを対象にする。既に登録されたリスナーはコールバックを止める。登録を省略した後に OFF へ戻す場合は、再登録のためアプリを再起動する。
 - `Application.attach` 後の既存ランタイム初期化で、既知 `ClipboardChecker` の唯一のシグネチャを反射で見つける。MainActivity の初回レイアウト前に登録できる構成にして、非同期 DexKit 完了待ちを避ける。
 - フルスキャンではクラスの文字列と `getPrimaryClip` の invoke を確認。既知クラスが改名された場合は文字列から候補を探す。改名時は初回起動の遅延検出となる可能性があるため、上位 APK の解析で必ず再確認する。
-- 候補・復元対象が曖昧な場合は登録しない。ステータスは `ClipboardReadBlockHook.AutomaticRead` に表示する。
-- `BiliHookSymbols` の schema は 40、DexKit rule は 62。旧キャッシュを再走査する。
+- 候補・復元対象が曖昧な場合は登録しない。ステータスは `ClipboardReadBlockHook.AutomaticRead` / `.ChangeListener` と `PageClipboardReadBlockHook.ReadRequests` の各子項目に表示する。
+- `BiliHookSymbols` の schema は 41、DexKit rule は 63。旧キャッシュを再走査する。
 
-Debug ビルド・JVM テストはクラウドで検証した。実機上の LSPosed 呼び出し、OS のクリップボード通知、起動・復帰の UI は未検証。上位バージョンとの互換性も、この 9.0.0 の静的解析だけでは確認済みとしない。
+Debug ビルド・JVM テストはクラウドで検証した。実機上の LSPosed 呼び出し、OS のクリップボード通知、起動・復帰の UI は未検証。既存の読み取りヘルパーの [9.7.0 比較](../9.7.0-9070300/clipboard.md)も保存しているが、追加したページ制限全体の互換性は別途各経路の確認が必要。
 
 ## 実機での確認
 

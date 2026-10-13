@@ -1,0 +1,34 @@
+{
+  "addedFrameworkReadCallers": [
+    "LV71/b;->d(Ljava/lang/Object;)Landroid/content/ClipData; => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;",
+    "LY80/t;->g(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;LCb0/c;)Ljava/lang/String; => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;",
+    "Landroidx/compose/ui/platform/m;->a(Ljava/lang/Object;)Landroid/content/ClipData; => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;",
+    "Lcom/mall/common/utils/g;->a(Ljava/lang/Object;)Landroid/content/ClipData; => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;",
+    "Lkntr/base/jsb/common/ability/Platform_androidKt$platformCopyToClipboard$2;->__Ghost$Insertion$com_bilibili_privacy_PrivacyGhost_getPrimaryClip(Ljava/lang/Object;)Landroid/content/ClipData; => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;",
+    "Lqo1/h;->d(Ltv/danmaku/biliplayerv2/service/interact/biz/chronos/chronosrpc/methods/receive/UpdateClipboard$Request;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+  ],
+  "addedReadHelpers": [],
+  "baselineApkSha256": "3d639ed495089da9d8707545054b0a4c07c27033f3667d8d78c32dd073969a20",
+  "baselineVersion": {
+    "package": "tv.danmaku.bili",
+    "versionCode": "9000200",
+    "versionName": "9.0.0"
+  },
+  "changedReadHelperBodies": [
+    "Ltv/danmaku/bili/ui/clipboard/ClipboardChecker;->c(Landroid/content/ClipboardManager;)Ljava/lang/String;"
+  ],
+  "currentApkSha256": "43c31cafee737af7f9c56d5826da9f00396a269e5ed44abf2b076a1adc914a33",
+  "currentVersion": {
+    "package": "tv.danmaku.bili",
+    "versionCode": "9070300",
+    "versionName": "9.7.0"
+  },
+  "removedFrameworkReadCallers": [
+    "LIh1/l;->c(Ltv/danmaku/biliplayerv2/service/interact/biz/chronos/chronosrpc/methods/receive/UpdateClipboard$Request;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;",
+    "LZ11/a;->d(Ljava/lang/Object;)Landroid/content/ClipData; => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;",
+    "LZ50/o;->g(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;LD80/c;)Ljava/lang/String; => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;",
+    "Landroidx/compose/ui/platform/j;->a(Ljava/lang/Object;)Landroid/content/ClipData; => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;",
+    "Lcom/mall/common/utils/e;->a(Ljava/lang/Object;)Landroid/content/ClipData; => Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+  ],
+  "removedReadHelpers": []
+}

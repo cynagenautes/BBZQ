@@ -30,6 +30,7 @@ import org.luckypray.dexkit.query.enums.StringMatchType
 import org.luckypray.dexkit.query.matchers.ClassMatcher
 import org.luckypray.dexkit.query.matchers.MethodMatcher
 import org.luckypray.dexkit.query.matchers.MethodsMatcher
+import org.luckypray.dexkit.query.matchers.InterfacesMatcher
 import org.json.JSONObject
 import java.io.File
 import java.lang.reflect.Field
@@ -51,6 +52,8 @@ object BiliSymbolResolver {
     private const val HP_SPLASH_AD = "SplashAdHook.JsonParsers"
     private const val HP_SHARE = "ShareHook.InstallPoints"
     private const val HP_CLIPBOARD_READ = "ClipboardReadBlockHook.AutomaticRead"
+    private const val HP_CLIPBOARD_LISTENER = "ClipboardReadBlockHook.ChangeListener"
+    private const val HP_PAGE_CLIPBOARD = "PageClipboardReadBlockHook.ReadRequests"
     private const val HP_SHARE_LEGACY = "ShareHook.LegacyShareClickResult"
     private const val HP_SHARE_CHANNELS = "ShareHook.ShareChannels"
     private const val HP_SHARE_BASE_INFO = "ShareHook.ShareBaseInfo"
@@ -292,9 +295,16 @@ object BiliSymbolResolver {
         val share = scanHookPoint(HP_SHARE, hookPoints, scanErrors, log) {
             scanShare(classLoader, ::bridge)
         }
-        val clipboardRead = scanHookPoint(HP_CLIPBOARD_READ, hookPoints, scanErrors, log) {
+        val clipboardReadBase = scanHookPoint(HP_CLIPBOARD_READ, hookPoints, scanErrors, log) {
             scanClipboardRead(classLoader, ::bridge, allowDexKit)
         }
+        val clipboardListener = scanHookPoint(HP_CLIPBOARD_LISTENER, hookPoints, scanErrors, log) {
+            scanClipboardListener(classLoader, ::bridge, allowDexKit)
+        }
+        val clipboardRead = clipboardReadBase?.copy(listenerCallback = clipboardListener)
+        val pageClipboardReads = scanHookPoint(HP_PAGE_CLIPBOARD, hookPoints, scanErrors, log) {
+            scanPageClipboardReads(classLoader, ::bridge, allowDexKit)
+        }.orEmpty()
         val rewardAd = scanHookPoint(HP_REWARD_AD, hookPoints, scanErrors, log) {
             scanRewardAd(classLoader)
         }
@@ -405,6 +415,7 @@ object BiliSymbolResolver {
             splashAd = splashAd,
             share = share,
             clipboardRead = clipboardRead,
+            pageClipboardReads = pageClipboardReads,
             rewardAd = rewardAd,
             tryFreeQuality = tryFreeQuality,
             teenagersMode = teenagersMode,
@@ -523,6 +534,123 @@ object BiliSymbolResolver {
             evidence = "gson=${gsonParsers.size},fastjson=${fastJsonParsers.size},kotlinx=${kotlinxParsers.size}",
         )
         return SymbolScanResult.Found(symbols, "JsonParsers", symbols.evidence)
+    }
+
+    fun resolveClipboardPrivacyOnly(
+        hostContext: Context,
+        classLoader: ClassLoader,
+        log: (String, Throwable?) -> Unit,
+    ): BiliHookSymbols {
+        // Background host processes need privacy protection without scanning all unrelated features.
+        // Do not persist this partial result over the main process's full cache.
+        val fingerprint = buildFingerprint(hostContext)
+        val cached = BiliHookSymbols.fromJson(
+            hostContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).getString(KEY_SYMBOLS, null),
+        )
+        if (cached?.isUsableWith(fingerprint) == true) return cached
+        val points = ArrayList<HookPointStatus>()
+        val errors = ArrayList<String>()
+        val read = scanHookPoint(HP_CLIPBOARD_READ, points, errors, log) {
+            scanClipboardRead(classLoader, { null }, false)
+        }
+        val listener = scanHookPoint(HP_CLIPBOARD_LISTENER, points, errors, log) {
+            scanClipboardListener(classLoader, { null }, false)
+        }
+        val pages = scanHookPoint(HP_PAGE_CLIPBOARD, points, errors, log) {
+            scanPageClipboardReads(classLoader, { null }, false)
+        }.orEmpty()
+        return BiliHookSymbols(
+            fingerprint = fingerprint, hookPoints = points, scanErrors = errors,
+            clipboardRead = read?.copy(listenerCallback = listener),
+            pageClipboardReads = pages,
+        )
+    }
+
+    private fun scanPageClipboardReads(
+        classLoader: ClassLoader,
+        bridge: () -> DexKitBridge?,
+        allowDexKit: Boolean,
+    ): SymbolScanResult<List<PageClipboardReadTarget>> {
+        val points = ArrayList<HookPointStatus>()
+        val targets = ArrayList<PageClipboardReadTarget>()
+        val currentBridge by lazy { if (allowDexKit) bridge() else null }
+        fun methods(matcher: MethodMatcher): List<Method> = currentBridge?.findMethod(
+            FindMethod.create().matcher(matcher),
+        )?.mapNotNull { runCatching { it.getMethodInstance(classLoader) }.getOrNull() }.orEmpty()
+        fun namedCoroutine(prefix: String): List<Method> = currentBridge?.findClass(
+            FindClass.create().matcher(ClassMatcher.create().className(prefix, StringMatchType.StartsWith)),
+        )?.flatMap { classLoader.loadClassOrNull(it.name)?.declaredMethods?.toList().orEmpty() }.orEmpty()
+        fun select(
+            role: String,
+            owners: List<String>,
+            kind: PageClipboardReadKind,
+            fallback: () -> List<Method>,
+        ) {
+            val fast = owners.flatMap { classLoader.loadClassOrNull(it)?.declaredMethods?.toList().orEmpty() }
+                .filter { PageClipboardMethodMatcher.matches(it, kind) }
+            val candidates = (if (allowDexKit) fallback() else fast)
+                .filter { PageClipboardMethodMatcher.matches(it, kind) }.distinctBy(Method::toGenericString)
+            // If DexKit is unavailable, retain only the previously audited owner/signature path.
+            val verified = if (allowDexKit && currentBridge == null) fast else candidates
+            val id = "$HP_PAGE_CLIPBOARD.$role"
+            if (verified.size == 1) {
+                val method = verified.single()
+                targets += PageClipboardReadTarget(MethodDescriptor.of(method), kind)
+                points += HookPointStatus.found(id, method.toGenericString(), "kind=$kind,unique=true")
+            } else {
+                points += HookPointStatus.missing(id, "read boundary missing/ambiguous: candidates=${verified.size}")
+            }
+        }
+        select("WebDispatch", listOf("Z50.o"), PageClipboardReadKind.WEB_DISPATCH) {
+            methods(MethodMatcher.create().usingStrings("getClipboardData", "setClipboardData")
+                .returnType(String::class.java).paramCount(4))
+        }
+        select("Mall", listOf("com.mall.ui.page.base.P"), PageClipboardReadKind.READ) {
+            methods(MethodMatcher.create().usingStrings("getClipboardContent_MallWebFragmentV2").paramCount(0).returnType(Void.TYPE))
+        }
+        select("OuroEditor", listOf("kntr.common.ouro.core.plugin.pasteboard.OuroPasteboardPlugin\$spec\$1\$1\$3"), PageClipboardReadKind.READ) {
+            methods(MethodMatcher.create().name("invokeSuspend").paramTypes(Any::class.java)
+                .declaredClass(ClassMatcher.create().className("kntr.common.ouro.core.plugin.pasteboard.OuroPasteboardPlugin$", StringMatchType.StartsWith))
+                .invokeMethods(MethodsMatcher.create().add(MethodMatcher.create()
+                    .declaredClass(ClipboardManager::class.java).name("getPrimaryClip").paramCount(0))))
+        }
+        select("MiniGame", listOf("com.bilibili.lib.fasthybrid.game.engine.ability.impl.clipboard.ClipboardAbility\$handleGetClipboardData\$1"), PageClipboardReadKind.READ) {
+            namedCoroutine("com.bilibili.lib.fasthybrid.game.engine.ability.impl.clipboard.ClipboardAbility\$handleGetClipboardData$")
+        }
+        select("PlayerRpc", listOf("Ih1.l", "qo1.h"), PageClipboardReadKind.PLAYER_RPC) {
+            methods(MethodMatcher.create().returnType(Void.TYPE).paramCount(3)
+                .invokeMethods(MethodsMatcher.create().add(MethodMatcher.create()
+                    .declaredClass(ClipboardManager::class.java).name("getPrimaryClip").paramCount(0))))
+        }
+        return if (targets.isEmpty()) SymbolScanResult.Missing("no page read boundaries found", points)
+        else SymbolScanResult.Found(targets, "PageClipboardReadRequests", "coverage=${targets.size}/5", points)
+    }
+
+    private fun scanClipboardListener(
+        classLoader: ClassLoader,
+        bridge: () -> DexKitBridge?,
+        allowDexKit: Boolean,
+    ): SymbolScanResult<MethodDescriptor> {
+        val known = listOf("tv.danmaku.bili.ui.clipboard.j", "tv.danmaku.bili.ui.clipboard.k")
+            .mapNotNull(classLoader::loadClassOrNull).mapNotNull(ClipboardListenerMatcher::callback)
+        val candidates = if (known.isNotEmpty() || !allowDexKit) known else {
+            bridge()?.findClass(
+                FindClass.create().matcher(
+                    ClassMatcher.create().interfaces(
+                        InterfacesMatcher.create().add(ClipboardManager.OnPrimaryClipChangedListener::class.java.name),
+                    ),
+                ),
+            )?.mapNotNull { classLoader.loadClassOrNull(it.name) }
+                ?.mapNotNull(ClipboardListenerMatcher::callback).orEmpty()
+        }.distinctBy(Method::toGenericString)
+        return when (candidates.size) {
+            1 -> SymbolScanResult.Found(
+                MethodDescriptor.of(candidates.single()), candidates.single().declaringClass.name,
+                "unique OnPrimaryClipChangedListener,fields=ClipboardManager+Context,callback=onPrimaryClipChanged",
+            )
+            0 -> SymbolScanResult.Missing("automatic clipboard change listener not found")
+            else -> SymbolScanResult.Missing("automatic clipboard change listener ambiguous: candidates=${candidates.size}")
+        }
     }
 
     private fun scanClipboardRead(

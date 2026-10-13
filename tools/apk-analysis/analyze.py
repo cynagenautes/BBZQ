@@ -10,6 +10,7 @@ import re
 import subprocess
 import sys
 import zipfile
+from privacy_inventory import inventory, compare as compare_privacy
 
 ROOT = Path(__file__).resolve().parent
 FRAMEWORK_READ = "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
@@ -60,6 +61,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True, help="Dedicated analysis directory outside the checkout")
     parser.add_argument("--tool-home", type=Path, default=ROOT, help="Directory containing installed lib/*.jar")
     parser.add_argument("--baseline", type=Path, help="A previous summary.json to compare")
+    parser.add_argument("--privacy-baseline", type=Path, help="A previous privacy-inventory.json to compare")
     args = parser.parse_args()
     apk, output, home = args.apk.resolve(), args.output.resolve(), args.tool_home.resolve()
     if output.is_relative_to(ROOT.parent.parent):
@@ -88,6 +90,11 @@ def main():
     run([java_home / "bin" / "java", "-Xmx2g", "-cp", classpath + os.pathsep + str(classes_dir),
          "ClipboardIndex", apk, index_path])
     index = json.loads(index_path.read_text())
+    privacy = inventory(index)
+    privacy.update(identity=identity, apkSha256=sha256(apk))
+    write_json(output / "privacy-inventory.json", privacy)
+    if args.privacy_baseline:
+        write_json(output / "privacy-diff.json", compare_privacy(json.loads(args.privacy_baseline.read_text()), privacy))
     marker_owners = defaultdict(set)
     for item in index["strings"]:
         marker_owners[owner(item["method"])].add(item["value"])
@@ -108,8 +115,21 @@ def main():
             groups[dex].add(name)
     for shape in helpers:
         groups[shape["dex"]].add(owner(shape["method"]))
+    # R8 can relocate synthetic callers outside the clipboard package (9.7.0 does this).
+    helper_descriptors = {h["method"] for h in helpers}
+    for call in index["calls"]:
+        if call["target"] in helper_descriptors:
+            groups[call["dex"]].add(owner(call["caller"]))
     for item in index["strings"]:
         if item["value"] == "start check clipboard from launcher":
+            groups[item["dex"]].add(owner(item["method"]))
+    # Preserve all content readers and page entry methods, including copy verification and native paste.
+    for call in index["calls"]:
+        if call["target"] == FRAMEWORK_READ:
+            groups[call["dex"]].add(owner(call["caller"]))
+    page_methods = {method for boundary in privacy["pageReadBoundaries"].values() for method in boundary["methods"]}
+    for item in index["strings"] + [{"method": c["caller"], "dex": c["dex"]} for c in index["calls"]]:
+        if item["method"] in page_methods:
             groups[item["dex"]].add(owner(item["method"]))
     # The two command-line tools depend on incompatible JCommander versions.
     def decompiler(which, command):
@@ -141,7 +161,6 @@ def main():
         shape["smaliPath"] = str(path.relative_to(output))
         decompiler("jadx", ["--no-res", "--single-class", cls[1:-1].replace("/", "."), "-j", "3",
                             "-d", output / "jadx", output / shape["dex"]])
-    helper_descriptors = {h["method"] for h in helpers}
     summary = {
         "schemaVersion": 1,
         "identity": identity,

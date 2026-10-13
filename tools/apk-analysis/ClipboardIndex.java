@@ -19,11 +19,22 @@ public class ClipboardIndex {
         var strings = new ArrayList<Map<String,Object>>();
         var namedClasses = new TreeMap<String,String>();
         var helpers = new ArrayList<Map<String,Object>>();
+        var listeners = new ArrayList<Map<String,Object>>();
+        var searchInputs = new ArrayList<Map<String,Object>>();
         int classes = 0, methods = 0;
         for (String entry : container.getDexEntryNames()) {
             var dex = container.getEntry(entry).getDexFile();
             for (var cls : dex.getClasses()) {
                 classes++;
+                if (cls.getInterfaces().contains("Landroid/content/ClipboardManager$OnPrimaryClipChangedListener;")) {
+                    var fields = new ArrayList<String>();
+                    for (var field : cls.getFields()) fields.add(field.getType());
+                    listeners.add(Map.of("dex", entry, "class", cls.getType(), "fieldTypes", fields));
+                }
+                if (cls.getType().toLowerCase(Locale.ROOT).contains("search") &&
+                    Set.of("Landroid/widget/EditText;", "Landroidx/appcompat/widget/AppCompatEditText;").contains(cls.getSuperclass())) {
+                    searchInputs.add(Map.of("dex", entry, "class", cls.getType(), "superclass", cls.getSuperclass()));
+                }
                 if (cls.getType().toLowerCase(Locale.ROOT).contains("clipboard")) namedClasses.put(cls.getType(),entry);
                 for (var method : cls.getMethods()) {
                     methods++;
@@ -47,7 +58,8 @@ public class ClipboardIndex {
                                 }
                             } else if (targets.isEmpty() && ref instanceof StringReference sr) {
                                 var str = sr.getString();
-                                if (str.toLowerCase(Locale.ROOT).contains("clipboard") || str.startsWith("getPrimaryClip:") || str.contains("剪贴")) {
+                                if (str.toLowerCase(Locale.ROOT).contains("clipboard") || str.startsWith("getPrimaryClip:") || str.contains("剪贴") ||
+                                    Set.of("getPrimaryClip", "hasPrimaryClip", "getPrimaryClipDescription", "addPrimaryClipChangedListener", "removePrimaryClipChangedListener").contains(str)) {
                                     strings.add(Map.of("dex",entry,"method",descriptor(method),"offset",offset,"value",str));
                                 }
                             }
@@ -59,7 +71,8 @@ public class ClipboardIndex {
             System.err.println("Scanned "+entry);
         }
         var result = Map.of("dex",container.getDexEntryNames(),"classCount",classes,"methodCount",methods,
-                            "calls",calls,"strings",strings,"clipboardNamedClasses",namedClasses,"readHelperShapes",helpers);
+                            "calls",calls,"strings",strings,"clipboardNamedClasses",namedClasses,"readHelperShapes",helpers,
+                            "clipboardListenerClasses",listeners,"searchInputClasses",searchInputs);
         try (var out = Files.newBufferedWriter(Path.of(args[1]))) {
             new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create().toJson(result,out);
         }

@@ -1,0 +1,184 @@
+{
+  "apkSha256": "43c31cafee737af7f9c56d5826da9f00396a269e5ed44abf2b076a1adc914a33",
+  "candidateStatus": "unique",
+  "certificateSha256": [
+    "93ba270f5521139ecafe4bb638ac5b1198bc548f62d9fd8f8580a079faf5910e"
+  ],
+  "checkerMarkers": {
+    "Ltv/danmaku/bili/ui/clipboard/ClipboardChecker;": [
+      "Clipboard check error happened.",
+      "Clipboard check exception: ",
+      "Clipboard is checking, please wait.",
+      "Clipboard jump page.",
+      "Clipboard manager is null.",
+      "Clipboard read disable.",
+      "Clipboard read is disabled.",
+      "ClipboardChecker",
+      "ClipboardJumpHelper",
+      "block clipboard jump: fromScheme=true, uri=",
+      "clipboard",
+      "clipboard.read_enable",
+      "clipboard.regex_rules",
+      "getPrimaryClip: clipdata = ",
+      "main.clipboard_jump_white_list",
+      "main.public-community.clipboard-jump.0.click",
+      "on clipboard jump checking",
+      "start check clipboard"
+    ]
+  },
+  "classCount": 279111,
+  "dexCount": 30,
+  "frameworkReads": [
+    {
+      "caller": "Landroidx/appcompat/widget/AppCompatEditText;->onTextContextMenuItem(I)Z",
+      "callerAccessFlags": 1,
+      "dex": "classes.dex",
+      "offset": 40,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Landroidx/compose/ui/platform/m;->a(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 9,
+      "dex": "classes.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "LV71/b;->d(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 9,
+      "dex": "classes17.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/mall/common/utils/g;->a(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 9,
+      "dex": "classes17.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lkntr/base/jsb/common/ability/Platform_androidKt$platformCopyToClipboard$2;->__Ghost$Insertion$com_bilibili_privacy_PrivacyGhost_getPrimaryClip(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 10,
+      "dex": "classes20.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lkntr/common/ouro/core/plugin/pasteboard/OuroPasteboardPlugin$spec$1$1$3;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes20.dex",
+      "offset": 37,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lqo1/h;->d(Ltv/danmaku/biliplayerv2/service/interact/biz/chronos/chronosrpc/methods/receive/UpdateClipboard$Request;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes22.dex",
+      "offset": 76,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Ltv/danmaku/bili/ui/clipboard/ClipboardChecker;->c(Landroid/content/ClipboardManager;)Ljava/lang/String;",
+      "callerAccessFlags": 9,
+      "dex": "classes22.dex",
+      "offset": 4,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/bilibili/app/comm/rubick/common/AbilityJsbService$copyToClipboard$2;->__Ghost$Insertion$com_bilibili_privacy_PrivacyGhost_getPrimaryClip(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 10,
+      "dex": "classes4.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/bilibili/app/producers/ability/CopyToClipboardService$execute$2$1;->__Ghost$Insertion$com_bilibili_privacy_PrivacyGhost_getPrimaryClip(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 10,
+      "dex": "classes4.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/bilibili/bililive/interaction/widgets/LiveRoomInputEditTextView;->a(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 9,
+      "dex": "classes6.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/bilibili/droid/ClipboardHelper;->read(Landroid/content/Context;)Ljava/lang/String;",
+      "callerAccessFlags": 9,
+      "dex": "classes8.dex",
+      "offset": 10,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "LY80/t;->g(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;LCb0/c;)Ljava/lang/String;",
+      "callerAccessFlags": 17,
+      "dex": "classes9.dex",
+      "offset": 75,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/bilibili/lib/fasthybrid/game/engine/ability/impl/clipboard/ClipboardAbility$handleGetClipboardData$1;->__Ghost$Insertion$com_bilibili_privacy_PrivacyGhost_getPrimaryClip(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 10,
+      "dex": "classes9.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    }
+  ],
+  "helperCallers": [
+    {
+      "caller": "LVW0/D0;->run()V",
+      "callerAccessFlags": 17,
+      "dex": "classes18.dex",
+      "offset": 17,
+      "opcode": "invoke-static",
+      "target": "Ltv/danmaku/bili/ui/clipboard/ClipboardChecker;->c(Landroid/content/ClipboardManager;)Ljava/lang/String;"
+    },
+    {
+      "caller": "Ltv/danmaku/bili/ui/clipboard/g;->call()Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes22.dex",
+      "offset": 4,
+      "opcode": "invoke-static",
+      "target": "Ltv/danmaku/bili/ui/clipboard/ClipboardChecker;->c(Landroid/content/ClipboardManager;)Ljava/lang/String;"
+    }
+  ],
+  "identity": {
+    "package": "tv.danmaku.bili",
+    "versionCode": "9070300",
+    "versionName": "9.7.0"
+  },
+  "methodCount": 1585925,
+  "readHelpers": [
+    {
+      "accessFlags": 9,
+      "dex": "classes22.dex",
+      "method": "Ltv/danmaku/bili/ui/clipboard/ClipboardChecker;->c(Landroid/content/ClipboardManager;)Ljava/lang/String;",
+      "smaliBodySha256": "9f2976b409cbce5ad20ec3fa98b343f096e96c6dcccb0f5ac6e2ea1c485e2b61",
+      "smaliPath": "smali/classes22.dex/tv/danmaku/bili/ui/clipboard/ClipboardChecker.smali"
+    }
+  ],
+  "runtimeValidated": false,
+  "schemaVersion": 1,
+  "tools": {
+    "baksmali": "3.0.9",
+    "jadx": "1.5.3"
+  }
+}

@@ -1,10 +1,28 @@
 package io.github.bbzq.feats.symbol
 
 import android.content.ClipboardManager
+import android.content.Context
 import org.junit.Assert.*
 import org.junit.Test
 
 class ClipboardReadSymbolsTest {
+    class HostListener(val manager: ClipboardManager?, val context: Context?) : ClipboardManager.OnPrimaryClipChangedListener {
+        override fun onPrimaryClipChanged() {}
+    }
+    class InputListener : ClipboardManager.OnPrimaryClipChangedListener {
+        override fun onPrimaryClipChanged() {}
+    }
+
+    @Test fun listenerCacheOnlyRestoresTheAuditedFieldShape() {
+        val callback = ClipboardListenerMatcher.callback(HostListener::class.java)!!
+        assertNull(ClipboardListenerMatcher.callback(InputListener::class.java))
+        val read = ClipboardReadMethodMatcher.findUnique(RenamedChecker::class.java)!!
+        val symbols = ClipboardReadSymbols(MethodDescriptor.of(read), "fixture", MethodDescriptor.of(callback))
+        val restored = ClipboardReadSymbols.fromJson(symbols.toJson())
+        assertEquals(callback, restored.restoreListener(javaClass.classLoader!!))
+        val unrelated = InputListener::class.java.getDeclaredMethod("onPrimaryClipChanged")
+        assertNull(symbols.copy(listenerCallback = MethodDescriptor.of(unrelated)).restoreListener(javaClass.classLoader!!))
+    }
     class RenamedChecker {
         companion object {
             @JvmStatic fun renamedRead(manager: ClipboardManager?): String = "original"

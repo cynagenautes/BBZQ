@@ -261,6 +261,12 @@ class SettingsContentFactory(
             ModuleSettings.KEY_BLOCK_AUTOMATIC_CLIPBOARD_READ_ENABLED,
             false,
         )
+        rows += createSwitchRow(
+            context.getString(R.string.startup_block_page_clipboard_title),
+            context.getString(R.string.startup_block_page_clipboard_summary),
+            ModuleSettings.KEY_BLOCK_PAGE_CLIPBOARD_READ_ENABLED,
+            false,
+        )
         if (hasHiddenFeatures()) {
             rows += createSwitchRow(
                 context.getString(R.string.startup_skip_splash_title),

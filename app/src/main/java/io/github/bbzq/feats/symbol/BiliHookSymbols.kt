@@ -19,6 +19,7 @@ data class BiliHookSymbols(
     val splashAd: SplashAdSymbols? = null,
     val share: ShareSymbols? = null,
     val clipboardRead: ClipboardReadSymbols? = null,
+    val pageClipboardReads: List<PageClipboardReadTarget> = emptyList(),
     val rewardAd: RewardAdSymbols? = null,
     val tryFreeQuality: TryFreeQualitySymbols? = null,
     val teenagersMode: TeenagersModeSymbols? = null,
@@ -63,6 +64,7 @@ data class BiliHookSymbols(
         .putOpt("splashAd", splashAd?.toJson())
         .putOpt("share", share?.toJson())
         .putOpt("clipboardRead", clipboardRead?.toJson())
+        .put("pageClipboardReads", pageClipboardReads.toJsonArray { it.toJson() })
         .putOpt("rewardAd", rewardAd?.toJson())
         .putOpt("tryFreeQuality", tryFreeQuality?.toJson())
         .putOpt("teenagersMode", teenagersMode?.toJson())
@@ -94,7 +96,7 @@ data class BiliHookSymbols(
         .putOpt("videoQuality", videoQuality?.toJson())
 
     companion object {
-        const val CACHE_SCHEMA_VERSION = 40
+        const val CACHE_SCHEMA_VERSION = 41
 
         fun fromJson(raw: String?): BiliHookSymbols? {
             if (raw.isNullOrBlank()) return null
@@ -109,6 +111,7 @@ data class BiliHookSymbols(
                     splashAd = obj.optJSONObject("splashAd")?.let(SplashAdSymbols::fromJson),
                     share = obj.optJSONObject("share")?.let(ShareSymbols::fromJson),
                     clipboardRead = obj.optJSONObject("clipboardRead")?.let(ClipboardReadSymbols::fromJson),
+                    pageClipboardReads = obj.optJSONArray("pageClipboardReads").toList { PageClipboardReadTarget.fromJson(it) },
                     rewardAd = obj.optJSONObject("rewardAd")?.let(RewardAdSymbols::fromJson),
                     tryFreeQuality = obj.optJSONObject("tryFreeQuality")?.let(TryFreeQualitySymbols::fromJson),
                     teenagersMode = obj.optJSONObject("teenagersMode")?.let(TeenagersModeSymbols::fromJson),
@@ -150,7 +153,7 @@ data class BiliHookSymbols(
 }
 
 object DexKitRuleVersions {
-    const val CURRENT = 62
+    const val CURRENT = 63
 }
 
 data class HookPointStatus(

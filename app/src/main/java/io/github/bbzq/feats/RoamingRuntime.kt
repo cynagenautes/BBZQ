@@ -25,6 +25,7 @@ import io.github.bbzq.feats.hook.VideoQualityHook
 import io.github.bbzq.feats.hook.FakeWifiHook
 import io.github.bbzq.feats.hook.FreeCopyHook
 import io.github.bbzq.feats.hook.ClipboardReadBlockHook
+import io.github.bbzq.feats.hook.PageClipboardReadBlockHook
 import io.github.bbzq.feats.hook.HomeRecommendAdHook
 import io.github.bbzq.feats.hook.HomeRecommendPreloadHook
 import io.github.bbzq.feats.hook.HomeRecommendTabHook
@@ -74,7 +75,7 @@ object RoamingRuntime {
         resolveProcessScope(packageName, processName) != ProcessScope.UNSUPPORTED
 
     fun isSymbolResolverProcess(packageName: String, processName: String): Boolean =
-        resolveProcessScope(packageName, processName) != ProcessScope.UNSUPPORTED
+        resolveProcessScope(packageName, processName).let { it != ProcessScope.UNSUPPORTED && it != ProcessScope.PRIVACY_ONLY }
 
     fun start(
         xposed: XposedInterface,
@@ -148,7 +149,9 @@ object RoamingRuntime {
                 )
             }
         }
-        val symbols = if (processScope != ProcessScope.UNSUPPORTED) {
+        val symbols = if (processScope == ProcessScope.PRIVACY_ONLY) {
+            BiliSymbolResolver.resolveClipboardPrivacyOnly(env.hostContext, classLoader, log)
+        } else if (processScope != ProcessScope.UNSUPPORTED) {
             BiliSymbolResolver.resolve(
                 hostContext = env.hostContext,
                 classLoader = classLoader,
@@ -168,11 +171,15 @@ object RoamingRuntime {
 
         val hooks = when (processScope) {
             ProcessScope.WEB -> listOf(
+                ::ClipboardReadBlockHook,
+                ::PageClipboardReadBlockHook,
                 ::ShareHook,
                 ::RewardAdHook,
             )
 
             ProcessScope.DOWNLOAD -> listOf(
+                ::ClipboardReadBlockHook,
+                ::PageClipboardReadBlockHook,
                 ::ComponentPoolBlockHook,
                 ::DownloadThreadHook,
                 ::CustomCdnHook,
@@ -180,6 +187,7 @@ object RoamingRuntime {
 
             ProcessScope.MAIN -> listOf(
                 ::ClipboardReadBlockHook,
+                ::PageClipboardReadBlockHook,
                 ::DaggerCircularDependencyFixHook,
                 ::SettingHook,
                 ::SplashAdHook,
@@ -234,6 +242,7 @@ object RoamingRuntime {
                 ::MediaSessionFixHook,
                 ::VideoEndRecommendHook,
             )
+            ProcessScope.PRIVACY_ONLY -> listOf(::ClipboardReadBlockHook, ::PageClipboardReadBlockHook)
             ProcessScope.UNSUPPORTED -> emptyList()
         }
 
@@ -271,6 +280,8 @@ object RoamingRuntime {
             normalizedProcessName == packageName -> ProcessScope.MAIN
             normalizedProcessName.endsWith(":web") -> ProcessScope.WEB
             normalizedProcessName.endsWith(":download") -> ProcessScope.DOWNLOAD
+            packageName in setOf("tv.danmaku.bili", "com.bilibili.app.blue") &&
+                normalizedProcessName.startsWith("$packageName:") -> ProcessScope.PRIVACY_ONLY
             else -> ProcessScope.UNSUPPORTED
         }
     }
@@ -279,6 +290,7 @@ object RoamingRuntime {
         MAIN,
         WEB,
         DOWNLOAD,
+        PRIVACY_ONLY,
         UNSUPPORTED,
     }
 

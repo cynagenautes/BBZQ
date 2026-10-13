@@ -1,0 +1,1009 @@
+{
+  "apkSha256": "3d639ed495089da9d8707545054b0a4c07c27033f3667d8d78c32dd073969a20",
+  "exactReflectionApiStrings": [],
+  "frameworkApiCalls": [
+    {
+      "caller": "Landroidx/appcompat/widget/AppCompatEditText;->onTextContextMenuItem(I)Z",
+      "callerAccessFlags": 1,
+      "dex": "classes.dex",
+      "offset": 40,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Landroidx/compose/foundation/text/input/internal/selection/TextFieldSelectionState;->B()Lkotlin/Unit;",
+      "callerAccessFlags": 17,
+      "dex": "classes.dex",
+      "offset": 8,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->hasPrimaryClip()Z"
+    },
+    {
+      "caller": "Landroidx/compose/foundation/text/input/internal/selection/TextFieldSelectionState;->B()Lkotlin/Unit;",
+      "callerAccessFlags": 17,
+      "dex": "classes.dex",
+      "offset": 20,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClipDescription()Landroid/content/ClipDescription;"
+    },
+    {
+      "caller": "Landroidx/compose/foundation/text/selection/TextFieldSelectionManager;->v(Lkotlin/coroutines/jvm/internal/ContinuationImpl;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes.dex",
+      "offset": 68,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClipDescription()Landroid/content/ClipDescription;"
+    },
+    {
+      "caller": "Landroidx/compose/ui/platform/j;->a(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 9,
+      "dex": "classes.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Landroidx/compose/ui/platform/j;->hasText()Z",
+      "callerAccessFlags": 17,
+      "dex": "classes.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClipDescription()Landroid/content/ClipDescription;"
+    },
+    {
+      "caller": "Landroidx/compose/ui/platform/j;->setClip(Landroidx/compose/ui/platform/ClipEntry;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes.dex",
+      "offset": 10,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->clearPrimaryClip()V"
+    },
+    {
+      "caller": "Landroidx/compose/ui/platform/j;->setClip(Landroidx/compose/ui/platform/ClipEntry;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes.dex",
+      "offset": 22,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Landroidx/compose/ui/platform/j;->setClip(Landroidx/compose/ui/platform/ClipEntry;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes.dex",
+      "offset": 32,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Landroidx/compose/ui/platform/j;->setText(Landroidx/compose/ui/text/AnnotatedString;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes.dex",
+      "offset": 490,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Landroidx/preference/Preference$d;->onMenuItemClick(Landroid/view/MenuItem;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes.dex",
+      "offset": 26,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LZn0/g;->invoke(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes10.dex",
+      "offset": 147,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lbj0/g;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes10.dex",
+      "offset": 66,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/music/podcast/legacy/fragment/ContributionsFragment;->onItemClick(Lcom/bilibili/app/comm/supermenu/core/IMenuItem;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes10.dex",
+      "offset": 79,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/playerbizcommon/widget/control/b;->onLongClick(Landroid/view/View;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes11.dex",
+      "offset": 79,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/playerbizcommonv2/widget/base/h;->onLongClick(Landroid/view/View;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes11.dex",
+      "offset": 60,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/search2/result/holder/chatgpt/ChatBubbleViewHolder;->p0(Lcom/bilibili/app/comm/list/widget/opus/F;Lcom/bilibili/search2/result/holder/chatgpt/api/SearchChatResultItem$Bubble;)Lcom/bilibili/app/comm/list/widget/opus/a;",
+      "callerAccessFlags": 17,
+      "dex": "classes11.dex",
+      "offset": 124,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LEv0/a;->t(Lcom/bilibili/socialize/share/core/shareparam/BaseShareParam;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes12.dex",
+      "offset": 27,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LEv0/c;->t(Lcom/bilibili/socialize/share/core/shareparam/BaseShareParam;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes12.dex",
+      "offset": 29,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/ship/theseus/ugc/intro/ugcheadline/UgcHeadlineService$b;->c(Ljava/lang/String;Z)V",
+      "callerAccessFlags": 17,
+      "dex": "classes12.dex",
+      "offset": 18,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Leo/g;->onSafeClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes13.dex",
+      "offset": 80,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lvo/m;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes13.dex",
+      "offset": 22,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LZ11/a;->d(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 9,
+      "dex": "classes14.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "LZ11/a;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes14.dex",
+      "offset": 14,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LZ11/a;->b()Ljava/lang/String;",
+      "callerAccessFlags": 17,
+      "dex": "classes14.dex",
+      "offset": 8,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->hasPrimaryClip()Z"
+    },
+    {
+      "caller": "LcH0/r;->onActionItemClicked(Landroid/view/ActionMode;Landroid/view/MenuItem;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes14.dex",
+      "offset": 104,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/tgwt/service/ChatService$msgLongClick$1;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes14.dex",
+      "offset": 97,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/mall/ui/composePage/circlePublish/view/c0$a;->onActionItemClicked(Landroid/view/ActionMode;Landroid/view/MenuItem;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes15.dex",
+      "offset": 111,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/lynx/tasm/behavior/ui/text/AndroidText;->performCopy()V",
+      "callerAccessFlags": 2,
+      "dex": "classes16.dex",
+      "offset": 96,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/mall/common/extension/MallKtExtensionKt;->clipboard(Ljava/lang/String;Ljava/lang/String;)V",
+      "callerAccessFlags": 25,
+      "dex": "classes16.dex",
+      "offset": 34,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/mall/common/utils/e;->a(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 9,
+      "dex": "classes16.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "LWS0/Q;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes17.dex",
+      "offset": 40,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/text/ClipboardManager;->setText(Ljava/lang/CharSequence;)V"
+    },
+    {
+      "caller": "LWS0/h;->onDialogClick(I)V",
+      "callerAccessFlags": 1,
+      "dex": "classes17.dex",
+      "offset": 66,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LWS0/v1;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes17.dex",
+      "offset": 32,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/text/ClipboardManager;->setText(Ljava/lang/CharSequence;)V"
+    },
+    {
+      "caller": "LbR0/X;->invoke(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes17.dex",
+      "offset": 677,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/mall/ui/page/base/P;->run()V",
+      "callerAccessFlags": 17,
+      "dex": "classes17.dex",
+      "offset": 35,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->hasPrimaryClip()Z"
+    },
+    {
+      "caller": "Lcom/mall/ui/page/order/express/r$a;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes17.dex",
+      "offset": 40,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/text/ClipboardManager;->setText(Ljava/lang/CharSequence;)V"
+    },
+    {
+      "caller": "Lcom/mall/videodetail/vd/mall/player/widget/MallPlayerProgressTextWidget;->I(Lcom/mall/videodetail/vd/mall/player/widget/MallPlayerProgressTextWidget;)Z",
+      "callerAccessFlags": 9,
+      "dex": "classes17.dex",
+      "offset": 57,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lkntr/common/ouro/core/plugin/pasteboard/OuroPasteboardPlugin$spec$1$1$3;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes19.dex",
+      "offset": 36,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lkntr/common/ouro/core/plugin/pasteboard/OuroPasteboardPlugin;->d(Lkntr/common/ouro/core/a;LL51/w;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes19.dex",
+      "offset": 980,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lkntr/common/share/common/handler/copy/a;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 9,
+      "dex": "classes19.dex",
+      "offset": 40,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LIh1/l;->c(Ltv/danmaku/biliplayerv2/service/interact/biz/chronos/chronosrpc/methods/receive/UpdateClipboard$Request;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes21.dex",
+      "offset": 35,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LIh1/l;->c(Ltv/danmaku/biliplayerv2/service/interact/biz/chronos/chronosrpc/methods/receive/UpdateClipboard$Request;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes21.dex",
+      "offset": 76,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Ltv/danmaku/bili/ui/clipboard/ClipboardChecker;->c(Landroid/content/ClipboardManager;)Ljava/lang/String;",
+      "callerAccessFlags": 9,
+      "dex": "classes21.dex",
+      "offset": 4,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Ltv/danmaku/bili/ui/clipboard/g;->then(Lbolts/Task;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes21.dex",
+      "offset": 438,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Ltv/danmaku/bili/ui/clipboard/h;->then(Lbolts/Task;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes21.dex",
+      "offset": 374,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/cloudgame/v2/ui/welfare/e;->invoke(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes23.dex",
+      "offset": 168,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LJ8/g;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes29.dex",
+      "offset": 488,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/ad/adview/following/widget/EllipsizingTextView;->_init_$lambda$0(Lcom/bilibili/ad/adview/following/widget/EllipsizingTextView;Landroid/view/View;)V",
+      "callerAccessFlags": 26,
+      "dex": "classes29.dex",
+      "offset": 14,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/helper/CdkPayHelper;->copyAllToClipboard(Landroid/content/Context;Ljava/util/List;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes29.dex",
+      "offset": 88,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/helper/CdkPayHelper;->copyToClipboard(Landroid/content/Context;Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes29.dex",
+      "offset": 34,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/helper/GameCommentHelper;->copyCommentContent(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes29.dex",
+      "offset": 30,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lm8/d;->a(Landroid/content/Context;Lcom/bilibili/gripper/api/ad/biz/comment/AdCommentClickParams;Lkotlin/jvm/functions/Function1;)Z",
+      "callerAccessFlags": 9,
+      "dex": "classes29.dex",
+      "offset": 808,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/app/authorspace/ui/L0;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes3.dex",
+      "offset": 39,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setText(Ljava/lang/CharSequence;)V"
+    },
+    {
+      "caller": "LhV/s;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes3.dex",
+      "offset": 50,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lue/c;->onLongClick(Landroid/view/View;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes3.dex",
+      "offset": 83,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LQk/r;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes4.dex",
+      "offset": 118,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LQk/t;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes4.dex",
+      "offset": 80,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lbl/j;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes4.dex",
+      "offset": 1338,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/app/comm/rubick/common/AbilityJsbService$copyToClipboard$2;->__Ghost$Insertion$com_bilibili_privacy_PrivacyGhost_getPrimaryClip(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 10,
+      "dex": "classes4.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/bilibili/app/comm/rubick/common/AbilityJsbService$copyToClipboard$2;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes4.dex",
+      "offset": 38,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/app/gemini/player/widget/progress/GeminiProgressTextWidget;->I(Lcom/bilibili/app/gemini/player/widget/progress/GeminiProgressTextWidget;)Z",
+      "callerAccessFlags": 9,
+      "dex": "classes4.dex",
+      "offset": 70,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/app/preferences/activity/PingTestActivity$a;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes4.dex",
+      "offset": 155,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/text/ClipboardManager;->setText(Ljava/lang/CharSequence;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/app/preferences/fragment/WideHelpFragment;->onCreateView$lambda$1(Lcom/bilibili/app/preferences/fragment/WideHelpFragment;Landroid/widget/TextView;Landroid/view/View;)V",
+      "callerAccessFlags": 26,
+      "dex": "classes4.dex",
+      "offset": 66,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/app/preferences/fragment/g;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes4.dex",
+      "offset": 56,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/app/producers/ability/CopyToClipboardService$execute$2$1;->__Ghost$Insertion$com_bilibili_privacy_PrivacyGhost_getPrimaryClip(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 10,
+      "dex": "classes4.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/bilibili/app/producers/ability/CopyToClipboardService$execute$2$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes4.dex",
+      "offset": 51,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bangumi/ui/page/detail/playerV2/widget/OGVPlayerPremiereProgressTextWidget;->I(Lcom/bilibili/bangumi/ui/page/detail/playerV2/widget/OGVPlayerPremiereProgressTextWidget;Landroid/view/View;)Z",
+      "callerAccessFlags": 9,
+      "dex": "classes4.dex",
+      "offset": 74,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bangumi/ui/page/detail/playerV2/widget/landscape/PgcPlayerCurrentProgressWidget;->I(Lcom/bilibili/bangumi/ui/page/detail/playerV2/widget/landscape/PgcPlayerCurrentProgressWidget;)Z",
+      "callerAccessFlags": 9,
+      "dex": "classes4.dex",
+      "offset": 56,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bangumi/ui/player/seek/OGVPlayerProgressTextWidget;->I(Lcom/bilibili/bangumi/ui/player/seek/OGVPlayerProgressTextWidget;Landroid/view/View;)Z",
+      "callerAccessFlags": 9,
+      "dex": "classes4.dex",
+      "offset": 58,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LRr/c;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 174,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LSw/f;->onTouch(Landroid/view/View;Landroid/view/MotionEvent;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 56,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/gift/v3/dialog/e;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 71,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/gift/v3/mine/MineForumGiftFragmentV3$b;->onSafeClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 35,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/gift/v3/mine/MineForumGiftFragmentV3$c;->onSafeClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 32,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/gift/v3/mine/MineGameGiftFragmentV3$a;->onSafeClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 39,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/gift/v3/mine/MineGameGiftFragmentV3$b;->onSafeClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 118,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/minev3/child/MineSettingFragment;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 146,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/minev3/child/MineSettingFragment;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 195,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/minev3/child/MineSettingFragment;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 253,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/minev3/child/MineSettingFragment;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 301,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/biligame/ui/pointmall/record/q;->invoke()Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 96,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bililive/biz/livehome/indexfeed/ui/live/center/LiveAnchorAwardFragment;->pf(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 49,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bililive/biz/rank/online/n;->onClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 34,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Los/h;->onSafeClick(Landroid/view/View;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes5.dex",
+      "offset": 73,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LTD/l1;->invoke(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes6.dex",
+      "offset": 45,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bililive/interaction/widgets/LiveRoomInputEditTextView;->a(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 9,
+      "dex": "classes6.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "LKR/d;->invoke(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 132,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LMR/b;->onLongClick(Landroid/view/View;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 36,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LOR/a;->c(Landroid/content/Context;LUQ/i2;Lcom/bilibili/bplus/followinglist/service/N;)Z",
+      "callerAccessFlags": 1,
+      "dex": "classes7.dex",
+      "offset": 62,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bplus/followingcard/widget/EllipsizingTextView;->setPrimaryClip(Ljava/lang/CharSequence;)V",
+      "callerAccessFlags": 2,
+      "dex": "classes7.dex",
+      "offset": 8,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bplus/im/aichat/conversation/g;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 49,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bplus/im/aichat/conversation/g;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 169,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bplus/im/aichat/conversation/g;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 188,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bplus/im/conversation/u;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 50,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bplus/im/conversation/u;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 170,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bplus/im/conversation/u;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 189,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/bplus/im/customer/l;->a(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 48,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LnR/n;->onLongClick(Landroid/view/View;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 83,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LnR/p;->onLongClick(Landroid/view/View;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 80,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LnR/s;->onLongClick(Landroid/view/View;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 69,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LnR/x;->onLongClick(Landroid/view/View;)Z",
+      "callerAccessFlags": 17,
+      "dex": "classes7.dex",
+      "offset": 80,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LYV/h;->Q(Ljava/lang/String;)V",
+      "callerAccessFlags": 17,
+      "dex": "classes8.dex",
+      "offset": 20,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/droid/ClipboardHelper;->copy(Landroid/content/Context;Ljava/lang/String;)V",
+      "callerAccessFlags": 9,
+      "dex": "classes8.dex",
+      "offset": 18,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/droid/ClipboardHelper;->read(Landroid/content/Context;)Ljava/lang/String;",
+      "callerAccessFlags": 9,
+      "dex": "classes8.dex",
+      "offset": 10,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/bilibili/gripper/clipboard/a;->doExecute(Lcom/bilibili/lib/gripper/api/Task;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes8.dex",
+      "offset": 48,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->addPrimaryClipChangedListener(Landroid/content/ClipboardManager$OnPrimaryClipChangedListener;)V"
+    },
+    {
+      "caller": "LZ50/o;->g(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;LD80/c;)Ljava/lang/String;",
+      "callerAccessFlags": 17,
+      "dex": "classes9.dex",
+      "offset": 61,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "LZ50/o;->g(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;LD80/c;)Ljava/lang/String;",
+      "callerAccessFlags": 17,
+      "dex": "classes9.dex",
+      "offset": 74,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "LZ50/o;->g(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;LD80/c;)Ljava/lang/String;",
+      "callerAccessFlags": 17,
+      "dex": "classes9.dex",
+      "offset": 121,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->hasPrimaryClip()Z"
+    },
+    {
+      "caller": "Lcom/bilibili/lib/fasthybrid/biz/debug/V;->invoke()Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes9.dex",
+      "offset": 31,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/lib/fasthybrid/biz/debug/W;->invoke()Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes9.dex",
+      "offset": 49,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    },
+    {
+      "caller": "Lcom/bilibili/lib/fasthybrid/game/engine/ability/impl/clipboard/ClipboardAbility$handleGetClipboardData$1;->__Ghost$Insertion$com_bilibili_privacy_PrivacyGhost_getPrimaryClip(Ljava/lang/Object;)Landroid/content/ClipData;",
+      "callerAccessFlags": 10,
+      "dex": "classes9.dex",
+      "offset": 2,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->getPrimaryClip()Landroid/content/ClipData;"
+    },
+    {
+      "caller": "Lcom/bilibili/lib/fasthybrid/game/engine/ability/impl/clipboard/ClipboardAbility$handleGetClipboardData$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes9.dex",
+      "offset": 12,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->hasPrimaryClip()Z"
+    },
+    {
+      "caller": "Lcom/bilibili/lib/fasthybrid/game/engine/ability/impl/clipboard/ClipboardAbility$handleSetClipboardData$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;",
+      "callerAccessFlags": 17,
+      "dex": "classes9.dex",
+      "offset": 53,
+      "opcode": "invoke-virtual",
+      "target": "Landroid/content/ClipboardManager;->setPrimaryClip(Landroid/content/ClipData;)V"
+    }
+  ],
+  "frameworkApiCounts": {
+    "addPrimaryClipChangedListener": 1,
+    "clearPrimaryClip": 1,
+    "getPrimaryClip": 13,
+    "getPrimaryClipDescription": 3,
+    "hasPrimaryClip": 5,
+    "setPrimaryClip": 86,
+    "setText": 5
+  },
+  "identity": {
+    "package": "tv.danmaku.bili",
+    "versionCode": "9000200",
+    "versionName": "9.0.0"
+  },
+  "listenerImplementations": [
+    {
+      "class": "Ltv/danmaku/bili/ui/clipboard/j;",
+      "dex": "classes21.dex",
+      "fieldTypes": [
+        "Landroid/content/ClipboardManager;",
+        "Landroid/content/Context;"
+      ]
+    }
+  ],
+  "manualReviewRequired": true,
+  "pageReadBoundaries": {
+    "Mall": {
+      "methods": [
+        "Lcom/mall/ui/page/base/P;->run()V"
+      ],
+      "status": "unique"
+    },
+    "MiniGame": {
+      "methods": [
+        "Lcom/bilibili/lib/fasthybrid/game/engine/ability/impl/clipboard/ClipboardAbility$handleGetClipboardData$1;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;"
+      ],
+      "status": "unique"
+    },
+    "OuroEditor": {
+      "methods": [
+        "Lkntr/common/ouro/core/plugin/pasteboard/OuroPasteboardPlugin$spec$1$1$3;->invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;"
+      ],
+      "status": "unique"
+    },
+    "PlayerRpc": {
+      "methods": [
+        "LIh1/l;->c(Ltv/danmaku/biliplayerv2/service/interact/biz/chronos/chronosrpc/methods/receive/UpdateClipboard$Request;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V"
+      ],
+      "status": "unique"
+    },
+    "WebDispatch": {
+      "methods": [
+        "LZ50/o;->g(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;LD80/c;)Ljava/lang/String;"
+      ],
+      "status": "unique"
+    }
+  },
+  "runtimeValidated": false,
+  "schemaVersion": 1,
+  "searchInputs": [
+    {
+      "class": "Lcom/bilibili/playset/playlist/search/MusicSearchView$QueryText;",
+      "dex": "classes11.dex",
+      "superclass": "Landroidx/appcompat/widget/AppCompatEditText;"
+    },
+    {
+      "class": "Lcom/bilibili/studio/videoeditor/bgm/bgmsearch/SearchEditText;",
+      "dex": "classes14.dex",
+      "superclass": "Landroidx/appcompat/widget/AppCompatEditText;"
+    },
+    {
+      "class": "Lcom/mall/ui/page/search/SearchEditText;",
+      "dex": "classes17.dex",
+      "superclass": "Landroidx/appcompat/widget/AppCompatEditText;"
+    },
+    {
+      "class": "Ltv/danmaku/bili/widget/SearchView$QueryText;",
+      "dex": "classes21.dex",
+      "superclass": "Landroidx/appcompat/widget/AppCompatEditText;"
+    },
+    {
+      "class": "Lcom/bilibili/bililive/biz/livehome/indexfeed/ui/widget/SearchView$QueryText;",
+      "dex": "classes5.dex",
+      "superclass": "Landroidx/appcompat/widget/AppCompatEditText;"
+    },
+    {
+      "class": "Lcom/bilibili/column/ui/widget/ColumnSearchView$QueryText;",
+      "dex": "classes8.dex",
+      "superclass": "Landroidx/appcompat/widget/AppCompatEditText;"
+    }
+  ]
+}

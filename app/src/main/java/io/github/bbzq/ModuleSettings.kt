@@ -99,6 +99,7 @@ object ModuleSettings {
     const val KEY_DISABLE_LIVE_ROOM_VERTICAL_SWIPE_ENABLED = "disable_live_room_vertical_swipe_enabled"
     const val KEY_DISABLE_LONG_PRESS_COPY_ENABLED = "disable_long_press_copy_enabled"
     const val KEY_BLOCK_AUTOMATIC_CLIPBOARD_READ_ENABLED = "block_automatic_clipboard_read_enabled"
+    const val KEY_BLOCK_PAGE_CLIPBOARD_READ_ENABLED = "block_page_clipboard_read_enabled"
     const val KEY_ENHANCE_LONG_PRESS_COPY_ENABLED = "enhance_long_press_copy_enabled"
     const val KEY_CUSTOM_BOTTOM_BAR_ENABLED = "custom_bottom_bar_enabled"
     const val KEY_CUSTOM_THEME_ENABLED = "custom_theme_enabled"
@@ -351,6 +352,7 @@ object ModuleSettings {
         ExportableConfigSpec(KEY_DISABLE_LIVE_ROOM_VERTICAL_SWIPE_ENABLED, ExportableValueType.BOOLEAN) { it.getBoolean(KEY_DISABLE_LIVE_ROOM_VERTICAL_SWIPE_ENABLED, false) },
         ExportableConfigSpec(KEY_DISABLE_LONG_PRESS_COPY_ENABLED, ExportableValueType.BOOLEAN) { it.getBoolean(KEY_DISABLE_LONG_PRESS_COPY_ENABLED, false) },
         ExportableConfigSpec(KEY_BLOCK_AUTOMATIC_CLIPBOARD_READ_ENABLED, ExportableValueType.BOOLEAN) { it.getBoolean(KEY_BLOCK_AUTOMATIC_CLIPBOARD_READ_ENABLED, false) },
+        ExportableConfigSpec(KEY_BLOCK_PAGE_CLIPBOARD_READ_ENABLED, ExportableValueType.BOOLEAN) { it.getBoolean(KEY_BLOCK_PAGE_CLIPBOARD_READ_ENABLED, false) },
         ExportableConfigSpec(KEY_ENHANCE_LONG_PRESS_COPY_ENABLED, ExportableValueType.BOOLEAN) { it.getBoolean(KEY_ENHANCE_LONG_PRESS_COPY_ENABLED, false) },
         ExportableConfigSpec(KEY_CUSTOM_BOTTOM_BAR_ENABLED, ExportableValueType.BOOLEAN) { it.getBoolean(KEY_CUSTOM_BOTTOM_BAR_ENABLED, false) },
         ExportableConfigSpec(KEY_CUSTOM_THEME_ENABLED, ExportableValueType.BOOLEAN) { it.getBoolean(KEY_CUSTOM_THEME_ENABLED, false) },
@@ -975,6 +977,9 @@ object ModuleSettings {
 
     fun isBlockAutomaticClipboardReadEnabled(prefs: SharedPreferences): Boolean =
         prefs.getBoolean(KEY_BLOCK_AUTOMATIC_CLIPBOARD_READ_ENABLED, false)
+
+    fun isBlockPageClipboardReadEnabled(prefs: SharedPreferences): Boolean =
+        prefs.getBoolean(KEY_BLOCK_PAGE_CLIPBOARD_READ_ENABLED, false)
 
     fun isEnhanceLongPressCopyEnabled(prefs: SharedPreferences): Boolean =
         prefs.getBoolean(KEY_ENHANCE_LONG_PRESS_COPY_ENABLED, false)
