@@ -85,6 +85,8 @@ object CustomCdnProcessor {
             ?: findHttpStringFieldValue(item)
             ?: return
         if (base.isBlank()) return
+        // A reply can reach more than one hooked path; a second pass would drop the original source from the backups.
+        if (base.substringAfter("://").substringBefore('/').equals(hosts[0], ignoreCase = true)) return
         val rawBackups = item.callMethod("getBackupUrlList")
             ?: item.callMethod("getBackupUrl")
             ?: findUrlListFieldValue(item)
